@@ -1,10 +1,29 @@
 from colorama import Fore, Style, init
-import os, time, sys
+import os, time, sys, json
 
 init()
 
-first_delay = 2
-all_sudoku_numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+def list_json_files(folder_path):
+    return [f for f in os.listdir(folder_path) if f.endswith('.json')]
+
+def choose_file(files):
+    print("Selecteer een bestand:")
+    for i, file in enumerate(files):
+        print(f"{i + 1}. {file}")
+    
+    while True:
+        try:
+            choice = int(input("Voer het bestandsnummer in: "))
+            if 1 <= choice <= len(files):
+                return files[choice - 1]
+            else:
+                print("Het ingevoerde nummer is onjuist. Probeer het opnieuw.")
+        except ValueError:
+            print("Voer een nummer in.")
+
+def load_json_file(filepath):
+    with open(filepath, 'r', encoding='utf-8') as file:
+        return json.load(file)
 
 class Sudoku:
     def __init__(self, size=9):
@@ -15,6 +34,7 @@ class Sudoku:
             ]
             for _ in range(size)
         ]
+        self.all_sudoku_numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9]
         self.current_point = {"row": 0, "col": 0}
         self.is_finished = False
         self.result = None
@@ -184,7 +204,7 @@ class Sudoku:
         point = self.board[row][col]
 
         if point["primary"] != True:
-            all_point_options = all_sudoku_numbers
+            all_point_options = self.all_sudoku_numbers
 
             row_result = self.row_analysis(row, only_primary)
             col_result = self.col_analysis(col, only_primary)
@@ -262,94 +282,21 @@ class Sudoku:
 
         self.display_result()
 
+folder = 'boards'
+
 sudoku = Sudoku(size=9)
 
-sudoku_board1 = [
-    { "row": 0, "col": 0, "num": 5 },
-    { "row": 0, "col": 1, "num": 3 },
-    { "row": 0, "col": 4, "num": 7 },
-    { "row": 1, "col": 0, "num": 6 },
-    { "row": 1, "col": 3, "num": 1 },
-    { "row": 1, "col": 4, "num": 9 },
-    { "row": 1, "col": 5, "num": 5 },
-    { "row": 2, "col": 1, "num": 9 },
-    { "row": 2, "col": 2, "num": 8 },
-    { "row": 2, "col": 7, "num": 6 },
-    { "row": 3, "col": 0, "num": 8 },
-    { "row": 3, "col": 4, "num": 6 },
-    { "row": 3, "col": 8, "num": 3 },
-    { "row": 4, "col": 0, "num": 4 },
-    { "row": 4, "col": 3, "num": 8 },
-    { "row": 4, "col": 5, "num": 3 },
-    { "row": 4, "col": 8, "num": 1 },
-    { "row": 5, "col": 0, "num": 7 },
-    { "row": 5, "col": 4, "num": 2 },
-    { "row": 5, "col": 8, "num": 6 },
-    { "row": 6, "col": 1, "num": 6 },
-    { "row": 6, "col": 6, "num": 2 },
-    { "row": 6, "col": 7, "num": 8 },
-    { "row": 7, "col": 3, "num": 4 },
-    { "row": 7, "col": 4, "num": 1 },
-    { "row": 7, "col": 5, "num": 9 },
-    { "row": 7, "col": 8, "num": 5 },
-    { "row": 8, "col": 4, "num": 8 },
-    { "row": 8, "col": 7, "num": 7 },
-    { "row": 8, "col": 8, "num": 9 },
-]
+json_files = list_json_files(folder)
 
-sudoku_board2 = [
-    { "row": 0, "col": 0, "num": 4 },
-    { "row": 0, "col": 1, "num": 2 },
-    { "row": 0, "col": 2, "num": 3 },
-    { "row": 0, "col": 4, "num": 8 },
-    { "row": 0, "col": 6, "num": 9 },
-    { "row": 0, "col": 8, "num": 5 },
-    { "row": 1, "col": 1, "num": 8 },
-    { "row": 1, "col": 5, "num": 3 },
-    { "row": 2, "col": 0, "num": 9 },
-    { "row": 2, "col": 2, "num": 1 },
-    { "row": 2, "col": 3, "num": 2 },
-    { "row": 2, "col": 5, "num": 4 },
-    { "row": 2, "col": 6, "num": 6 },
-    { "row": 2, "col": 8, "num": 3 },
-    { "row": 3, "col": 0, "num": 2 },
-    { "row": 3, "col": 4, "num": 4 },
-    { "row": 3, "col": 5, "num": 5 },
-    { "row": 3, "col": 7, "num": 7 },
-    { "row": 3, "col": 8, "num": 1 },
-    { "row": 4, "col": 1, "num": 1 },
-    { "row": 4, "col": 3, "num": 7 },
-    { "row": 4, "col": 4, "num": 2 },
-    { "row": 4, "col": 8, "num": 9 },
-    { "row": 5, "col": 0, "num": 7 },
-    { "row": 5, "col": 1, "num": 3 },
-    { "row": 5, "col": 2, "num": 4 },
-    { "row": 5, "col": 3, "num": 8 },
-    { "row": 5, "col": 7, "num": 5 },
-    { "row": 6, "col": 1, "num": 4 },
-    { "row": 6, "col": 3, "num": 1 },
-    { "row": 6, "col": 4, "num": 6 },
-    { "row": 6, "col": 5, "num": 2 },
-    { "row": 6, "col": 6, "num": 5 },
-    { "row": 6, "col": 7, "num": 9 },
-    { "row": 6, "col": 8, "num": 8 },
-    { "row": 7, "col": 0, "num": 8 },
-    { "row": 7, "col": 1, "num": 5 },
-    { "row": 7, "col": 8, "num": 2 },
-    { "row": 8, "col": 0, "num": 1 },
-    { "row": 8, "col": 2, "num": 2 },
-    { "row": 8, "col": 3, "num": 5 },
-    { "row": 8, "col": 5, "num": 8 },
-    { "row": 8, "col": 6, "num": 7 },
-    { "row": 8, "col": 7, "num": 6 },
-]
+if not json_files:
+    sys.exit("Er staan geen JSON-bestanden in de map ‘boards’.")
 
-sudoku_board3 = [
-    {"row": 0, "col": 0, "num": 2},
-    {"row": 0, "col": 1, "num": 2},
-]
+selected_file = choose_file(json_files)
+sudoku_board = load_json_file(os.path.join(folder, selected_file))
 
-sudoku.set_values(sudoku_board2 , True)
+sudoku.set_values(sudoku_board , True)
 sudoku.display({"rewrite": True})
-time.sleep(first_delay)
+
+time.sleep(2)
+
 sudoku.start_decryption()
