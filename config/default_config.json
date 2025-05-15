@@ -1,0 +1,8 @@
+{
+   "project": {
+      "name": "Sudoku Solver",
+      "version": "0.5"
+   },
+   "boards_json_path": "boards",
+   "animation_delay": 0.0
+}
