@@ -1,0 +1,15 @@
+[
+  { "row": 0, "col": 0, "num": 5 },
+  { "row": 0, "col": 1, "num": 3 },
+  { "row": 0, "col": 4, "num": 7 },
+  { "row": 1, "col": 0, "num": 6 },
+  { "row": 1, "col": 4, "num": 5 },
+  { "row": 1, "col": 5, "num": 3 },
+  { "row": 2, "col": 1, "num": 9 },
+  { "row": 2, "col": 2, "num": 8 },
+  { "row": 2, "col": 7, "num": 6 },
+
+  { "row": 0, "col": 0, "num": 5 },
+  { "row": 9, "col": 0, "num": 1 },
+  { "row": 2, "col": 2, "num": 15 }
+]

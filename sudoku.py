@@ -64,6 +64,32 @@ class Sudoku:
             if inp == "back":
                return
 
+    def is_valid_sudoku_json(self, board):
+        rows = [set() for _ in range(self.size)]
+        cols = [set() for _ in range(self.size)]
+        boxes = [set() for _ in range(self.size)]
+
+        for cell in board:
+            row = cell.get("row")
+            col = cell.get("col")
+            num = cell.get("num")
+
+            if not all(isinstance(v, int) for v in [row, col, num]):
+                return False
+            if not (0 <= row <= 8 and 0 <= col <= 8 and 1 <= num <= 9):
+                return False
+
+            box_index = (row // 3) * 3 + (col // 3)
+
+            if num in rows[row] or num in cols[col] or num in boxes[box_index]:
+                return False
+
+            rows[row].add(num)
+            cols[col].add(num)
+            boxes[box_index].add(num)
+
+        return True
+
     def update_cell(self, row, col):
         block_size = int(self.size ** 0.5)
         cell = self.board[row][col]

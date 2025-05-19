@@ -43,6 +43,11 @@ def start_solver(config):
          if 1 <= int(inp) <= len(files):
             sudoku_data = load_json_file(os.path.join(config["boards_json_path"], files[int(inp) - 1]))
             sudoku = Sudoku(size=9, config=config)
+            
+            if not sudoku.is_valid_sudoku_json(sudoku_data):
+               print("Het Sudoku-bord heeft gebreken!")
+               continue
+
             sudoku.set_values(sudoku_data, is_primary=True)
             sudoku.display({"rewrite": True})
             time.sleep(2)
